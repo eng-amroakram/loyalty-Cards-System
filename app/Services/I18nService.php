@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Io238\ISOCountries\Models\Currency;
@@ -11,7 +12,7 @@ class I18nService
 {
     /**
      * Determines the preferred locale (language / country) of a visitor based on their browser language.
-     * If a translation is available and the language is active, the locale is determined and returned. 
+     * If a translation is available and the language is active, the locale is determined and returned.
      * If a translation is not available or the language is inactive, the application's default locale is returned instead.
      *
      * @param  bool  $parsedForUrl When false, returns the locale in the format 'en_US', when true returns 'en-us'.
@@ -59,9 +60,9 @@ class I18nService
     private function checkAvailableTranslation($countries, $language): ?string
     {
         foreach ($countries as $country) {
-            $locale = $language.'_'.$country->id;
+            $locale = $language . '_' . $country->id;
 
-            if (File::exists(lang_path().'/'.$locale.'/')) {
+            if (File::exists(lang_path() . '/' . $locale . '/')) {
                 if (file_exists(lang_path($locale . '/config.php'))) {
                     if (config('default.app_demo')) {
                         return $locale;
@@ -165,7 +166,7 @@ class I18nService
         }
 
         // No current language found, set to first found language to prevent errors
-        if (! $currentLanguage) $currentLanguage = $languages[0];
+        if (!$currentLanguage) $currentLanguage = $languages[0];
 
         return [
             'current' => $currentLanguage,
@@ -196,9 +197,9 @@ class I18nService
                 $country = locale_get_display_region($locale, $language ?? $localeLanguage);
 
                 if ($country != '') {
-                    $country = ' ('.$country.')';
+                    $country = ' (' . $country . ')';
                 }
-                $locales[$locale] = $lang.$country;
+                $locales[$locale] = $lang . $country;
             }
         }
 
@@ -223,10 +224,10 @@ class I18nService
         $country = locale_get_display_region($locale, $language ?? $localeLanguage);
 
         if ($country != '') {
-            $country = ' ('.$country.')';
+            $country = ' (' . $country . ')';
         }
 
-        return $lang.$country;
+        return $lang . $country;
     }
 
     /**
@@ -291,7 +292,7 @@ class I18nService
 
         foreach ($currencies as $currency) {
             if (is_null($allowedCurrencies) || in_array($currency->id, $allowedCurrencies)) {
-                $return[$currency->id] = $currency->name.' ('.$currency->id.')';
+                $return[$currency->id] = $currency->name . ' (' . $currency->id . ')';
             }
         }
 

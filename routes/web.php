@@ -197,3 +197,5 @@ Route::fallback(function () {
     return redirect()->route('redir.locale');
 });
 
+
+
